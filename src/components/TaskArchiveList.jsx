@@ -4,7 +4,7 @@ function TaskArchiveList({ tasks, onRestore, onDelete, isTaskProcessing }) {
 	if (!tasks.length) {
 		return (
 			<div className="empty-state">
-				<p className="section-label">Cementerio de tareas</p>
+				<p className="section-label">Borradores</p>
 				<h2>No hay tareas archivadas</h2>
 				<p>Las tareas completadas apareceran aqui y se borraran solas al cumplir 15 minutos.</p>
 			</div>

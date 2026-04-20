@@ -8,7 +8,8 @@ function AppRoutes() {
 		<Routes>
 			<Route element={<AppLayout />}>
 				<Route index element={<Home />} />
-				<Route path="cementerio" element={<Cemetery />} />
+				<Route path="borradores" element={<Cemetery />} />
+				<Route path="cementerio" element={<Navigate to="/borradores" replace />} />
 				<Route path="*" element={<Navigate to="/" replace />} />
 			</Route>
 		</Routes>

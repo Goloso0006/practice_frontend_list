@@ -108,9 +108,9 @@ function TaskItem({ task, onComplete, onDelete, onUpdate, isProcessing = false }
 					className="task-item__toggle"
 					onClick={() => onComplete(task.id)}
 					disabled={isProcessing}
-					aria-label="Enviar al Cementerio"
+					aria-label="Marcar como completada"
 				>
-					{isProcessing ? 'Moviendo...' : 'Enviar al Cementerio'}
+					{isProcessing ? 'Completando...' : 'Completada'}
 				</button>
 
 				<div>

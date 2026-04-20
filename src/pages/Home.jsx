@@ -54,7 +54,7 @@ function Home() {
 						</article>
 						<article>
 							<strong>{archiveCount}</strong>
-							<span>En cementerio</span>
+							<span>Borradores</span>
 						</article>
 						<article>
 							<strong>{totalCount}</strong>

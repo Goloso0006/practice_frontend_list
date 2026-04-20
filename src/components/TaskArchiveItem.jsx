@@ -11,7 +11,7 @@ function TaskArchiveItem({ task, onRestore, onDelete, isProcessing = false }) {
 	return (
 		<article className="task-item task-item--archive">
 			<div className="task-item__content">
-				<span className="archive-badge">Cementerio</span>
+				<span className="archive-badge">Borradores</span>
 
 				<div>
 					<h3>{task.title}</h3>

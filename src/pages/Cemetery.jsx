@@ -18,7 +18,7 @@ function Cemetery() {
 			<section className="hero">
 				<div className="hero__copy">
 					<p className="section-label">Zona de descanso</p>
-					<h1>Cementerio de tareas</h1>
+					<h1>Borradores de tareas</h1>
 					<p className="hero__description">
 						Aqui viven temporalmente las tareas completadas. Si no se restauran, se eliminan
 						automaticamente de la base de datos al cumplir 15 minutos.
@@ -27,7 +27,7 @@ function Cemetery() {
 					<div className="hero__stats">
 						<article>
 							<strong>{archiveCount}</strong>
-							<span>Archivadas</span>
+							<span>Borradores</span>
 						</article>
 						<article>
 							<strong>{activeCount}</strong>
