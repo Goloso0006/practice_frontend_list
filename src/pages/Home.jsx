@@ -31,6 +31,7 @@ function Home() {
 		pendingTasks,
 		isTaskProcessing,
 		addTask,
+		updateTask,
 		toggleTaskCompletion,
 		removeTask,
 	} = useTasks()
@@ -94,6 +95,7 @@ function Home() {
 							tasks={tasks}
 							onToggleCompletion={toggleTaskCompletion}
 							onDelete={removeTask}
+							onUpdate={updateTask}
 							isTaskProcessing={isTaskProcessing}
 						/>
 					)}

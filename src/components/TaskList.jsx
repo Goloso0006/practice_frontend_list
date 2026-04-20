@@ -1,6 +1,6 @@
 import TaskItem from './TaskItem'
 
-function TaskList({ tasks, onToggleCompletion, onDelete, isTaskProcessing }) {
+function TaskList({ tasks, onToggleCompletion, onDelete, onUpdate, isTaskProcessing }) {
 	if (!tasks.length) {
 		return (
 			<div className="empty-state">
@@ -19,6 +19,7 @@ function TaskList({ tasks, onToggleCompletion, onDelete, isTaskProcessing }) {
 					task={task}
 					onToggleCompletion={onToggleCompletion}
 					onDelete={onDelete}
+					onUpdate={onUpdate}
 					isProcessing={isTaskProcessing(task.id)}
 				/>
 			))}

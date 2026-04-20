@@ -90,13 +90,41 @@ export default function useTasks() {
 			await updateTaskMutation.mutateAsync({
 				taskId,
 				taskData: {
-				title: taskToUpdate.title,
-				description: taskToUpdate.description,
-				completed: !taskToUpdate.completed,
+					title: taskToUpdate.title,
+					description: taskToUpdate.description,
+					completed: !taskToUpdate.completed,
 				},
 			})
 		} catch (updateError) {
 			setError(updateError.message || 'No se pudo actualizar la tarea.')
+		} finally {
+			finishTaskProcessing(taskId)
+		}
+	}
+
+	const updateTask = async (taskId, taskData) => {
+		const taskToUpdate = tasks.find((task) => task.id === taskId)
+
+		if (!taskToUpdate) {
+			return
+		}
+
+		setError('')
+		beginTaskProcessing(taskId)
+
+		try {
+			await updateTaskMutation.mutateAsync({
+				taskId,
+				taskData: {
+					title: taskData.title,
+					description: taskData.description,
+					completed: taskToUpdate.completed,
+				},
+			})
+		} catch (updateError) {
+			const errorMessage = updateError.message || 'No se pudo editar la tarea.'
+			setError(errorMessage)
+			throw new Error(errorMessage)
 		} finally {
 			finishTaskProcessing(taskId)
 		}
@@ -131,6 +159,7 @@ export default function useTasks() {
 		pendingTasks,
 		isTaskProcessing,
 		addTask,
+		updateTask,
 		toggleTaskCompletion,
 		removeTask,
 	}
