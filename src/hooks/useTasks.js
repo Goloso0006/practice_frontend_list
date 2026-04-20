@@ -120,7 +120,6 @@ export default function useTasks() {
 		error,
 		completedTasks,
 		pendingTasks,
-		loadTasks,
 		isTaskProcessing,
 		addTask,
 		toggleTaskCompletion,
