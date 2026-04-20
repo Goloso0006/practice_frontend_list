@@ -1,4 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
+import {
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from '@tanstack/react-query'
 import {
 	createTask as createTaskRequest,
 	deleteTask as deleteTaskRequest,
@@ -6,12 +11,42 @@ import {
 	updateTask as updateTaskRequest,
 } from '../api/taskApi'
 
+const TASKS_QUERY_KEY = ['tasks']
+
 export default function useTasks() {
-	const [tasks, setTasks] = useState([])
-	const [isLoading, setIsLoading] = useState(true)
-	const [isSubmitting, setIsSubmitting] = useState(false)
-	const [processingTaskIds, setProcessingTaskIds] = useState([])
+	const queryClient = useQueryClient()
 	const [error, setError] = useState('')
+	const [processingTaskIds, setProcessingTaskIds] = useState([])
+
+	const {
+		data: tasks = [],
+		isLoading,
+		error: loadError,
+	} = useQuery({
+		queryKey: TASKS_QUERY_KEY,
+		queryFn: getAllTasks,
+	})
+
+	const createTaskMutation = useMutation({
+		mutationFn: createTaskRequest,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY })
+		},
+	})
+
+	const updateTaskMutation = useMutation({
+		mutationFn: ({ taskId, taskData }) => updateTaskRequest(taskId, taskData),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY })
+		},
+	})
+
+	const deleteTaskMutation = useMutation({
+		mutationFn: deleteTaskRequest,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY })
+		},
+	})
 
 	const beginTaskProcessing = (taskId) => {
 		setProcessingTaskIds((currentIds) => {
@@ -29,37 +64,15 @@ export default function useTasks() {
 		)
 	}
 
-	const loadTasks = useCallback(async () => {
-		setError('')
-		setIsLoading(true)
-
-		try {
-			const apiTasks = await getAllTasks()
-			setTasks(Array.isArray(apiTasks) ? apiTasks : [])
-		} catch (loadError) {
-			setError(loadError.message || 'No se pudieron cargar las tareas.')
-		} finally {
-			setIsLoading(false)
-		}
-	}, [])
-
-	useEffect(() => {
-		loadTasks()
-	}, [loadTasks])
-
 	const addTask = async (taskData) => {
 		setError('')
-		setIsSubmitting(true)
 
 		try {
-			const createdTask = await createTaskRequest(taskData)
-			setTasks((currentTasks) => [createdTask, ...currentTasks])
+			await createTaskMutation.mutateAsync(taskData)
 		} catch (createError) {
 			const errorMessage = createError.message || 'No se pudo crear la tarea.'
 			setError(errorMessage)
 			throw new Error(errorMessage)
-		} finally {
-			setIsSubmitting(false)
 		}
 	}
 
@@ -74,17 +87,14 @@ export default function useTasks() {
 		beginTaskProcessing(taskId)
 
 		try {
-			const updatedTask = await updateTaskRequest(taskId, {
+			await updateTaskMutation.mutateAsync({
+				taskId,
+				taskData: {
 				title: taskToUpdate.title,
 				description: taskToUpdate.description,
 				completed: !taskToUpdate.completed,
+				},
 			})
-
-			setTasks((currentTasks) =>
-				currentTasks.map((task) =>
-					task.id === taskId ? updatedTask : task,
-				),
-			)
 		} catch (updateError) {
 			setError(updateError.message || 'No se pudo actualizar la tarea.')
 		} finally {
@@ -97,10 +107,7 @@ export default function useTasks() {
 		beginTaskProcessing(taskId)
 
 		try {
-			await deleteTaskRequest(taskId)
-			setTasks((currentTasks) =>
-				currentTasks.filter((task) => task.id !== taskId),
-			)
+			await deleteTaskMutation.mutateAsync(taskId)
 		} catch (deleteError) {
 			setError(deleteError.message || 'No se pudo eliminar la tarea.')
 		} finally {
@@ -109,6 +116,8 @@ export default function useTasks() {
 	}
 
 	const isTaskProcessing = (taskId) => processingTaskIds.includes(taskId)
+	const isSubmitting = createTaskMutation.isPending
+	const displayError = error || loadError?.message || ''
 
 	const completedTasks = tasks.filter((task) => task.completed).length
 	const pendingTasks = tasks.length - completedTasks
@@ -117,7 +126,7 @@ export default function useTasks() {
 		tasks,
 		isLoading,
 		isSubmitting,
-		error,
+		error: displayError,
 		completedTasks,
 		pendingTasks,
 		isTaskProcessing,

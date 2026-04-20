@@ -44,3 +44,4 @@ Recomendación práctica para ustedes:
 Empiecen por React Hook Form + Zod (rápido y simple), luego agreguen TanStack Query para la lógica de backend. Esa combinación optimiza bastante sin sobrecargar el proyecto.
 
 - npm install react-hook-form zod @hookform/resolvers
+- npm install @tanstack/react-query
