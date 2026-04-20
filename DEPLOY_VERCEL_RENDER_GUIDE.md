@@ -29,6 +29,16 @@ http://localhost:5173
 https://tu-proyecto.vercel.app
 3. Si usas dominio custom, agrega ese dominio tambien.
 
+### Paso adicional: verificar dominio de Vercel en CORS
+
+Antes de probar el frontend, confirma que el backend permita el origen correcto de Vercel.
+
+1. Si ya tienes URL final, agrega la ruta exacta en CORS:
+https://practice-frontend-list.vercel.app
+2. Si aun no tienes URL final, permite solo dominios de Vercel con patron:
+https://*.vercel.app
+3. Cuando tengas dominio definitivo, reemplaza el patron por la URL exacta para mayor seguridad.
+
 ## 4. Configuracion local del frontend
 
 Este frontend usa Vite y variable de entorno VITE_API_URL.
