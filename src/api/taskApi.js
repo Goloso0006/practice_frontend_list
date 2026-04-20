@@ -8,9 +8,8 @@ export const TASK_ENDPOINTS = {
 	taskById: (taskId) => `${TASK_API_BASE_URL}/tasks/${taskId}`,
 }
 
-const JSON_HEADERS = {
+const DEFAULT_HEADERS = {
 	Accept: 'application/json',
-	'Content-Type': 'application/json',
 }
 
 function getErrorMessage(errorPayload, statusCode) {
@@ -65,6 +64,10 @@ function normalizeTaskPayload(taskData) {
 		throw new Error('El titulo es obligatorio.')
 	}
 
+	if (title.length > 200) {
+		throw new Error('El titulo no puede superar los 200 caracteres.')
+	}
+
 	return {
 		title,
 		description: taskData.description?.trim() || '',
@@ -75,10 +78,11 @@ function normalizeTaskPayload(taskData) {
 async function request(method, url, body) {
 	const options = {
 		method,
-		headers: JSON_HEADERS,
+		headers: { ...DEFAULT_HEADERS },
 	}
 
-	if (body) {
+	if (typeof body !== 'undefined') {
+		options.headers['Content-Type'] = 'application/json'
 		options.body = JSON.stringify(body)
 	}
 
