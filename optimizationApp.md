@@ -45,3 +45,4 @@ Empiecen por React Hook Form + Zod (rápido y simple), luego agreguen TanStack Q
 
 - npm install react-hook-form zod @hookform/resolvers
 - npm install @tanstack/react-query
+- npm install react-router-dom

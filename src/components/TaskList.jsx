@@ -1,12 +1,12 @@
 import TaskItem from './TaskItem'
 
-function TaskList({ tasks, onToggleCompletion, onDelete, onUpdate, isTaskProcessing }) {
+function TaskList({ tasks, onComplete, onDelete, onUpdate, isTaskProcessing }) {
 	if (!tasks.length) {
 		return (
 			<div className="empty-state">
 				<p className="section-label">Lista de tareas</p>
-				<h2>No hay tareas aún</h2>
-				<p>La estructura ya está lista para empezar a conectar el backend.</p>
+				<h2>No hay tareas activas</h2>
+				<p>Todo lo pendiente ya paso al Cementerio de tareas.</p>
 			</div>
 		)
 	}
@@ -17,7 +17,7 @@ function TaskList({ tasks, onToggleCompletion, onDelete, onUpdate, isTaskProcess
 				<TaskItem
 					key={task.id}
 					task={task}
-					onToggleCompletion={onToggleCompletion}
+					onComplete={onComplete}
 					onDelete={onDelete}
 					onUpdate={onUpdate}
 					isProcessing={isTaskProcessing(task.id)}

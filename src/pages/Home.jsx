@@ -1,6 +1,6 @@
 import TaskForm from '../components/TaskForm'
 import TaskList from '../components/TaskList'
-import useTasks from '../hooks/useTasks'
+import useTaskLifecycle from '../hooks/useTaskLifecycle'
 
 const MODULE_CARDS = [
 	{
@@ -23,18 +23,18 @@ const MODULE_CARDS = [
 
 function Home() {
 	const {
-		tasks,
+		activeTasks,
+		archiveCount,
+		totalCount,
 		isLoading,
 		isSubmitting,
 		error,
-		completedTasks,
-		pendingTasks,
 		isTaskProcessing,
 		addTask,
+		markTaskAsCompleted,
 		updateTask,
-		toggleTaskCompletion,
 		removeTask,
-	} = useTasks()
+	} = useTaskLifecycle()
 
 	return (
 		<main className="app-shell">
@@ -49,16 +49,16 @@ function Home() {
 
 					<div className="hero__stats">
 						<article>
-							<strong>{tasks.length}</strong>
-							<span>Tareas visibles</span>
+							<strong>{activeTasks.length}</strong>
+							<span>Activas</span>
 						</article>
 						<article>
-							<strong>{completedTasks}</strong>
-							<span>Completadas</span>
+							<strong>{archiveCount}</strong>
+							<span>En cementerio</span>
 						</article>
 						<article>
-							<strong>{pendingTasks}</strong>
-							<span>Pendientes</span>
+							<strong>{totalCount}</strong>
+							<span>Total</span>
 						</article>
 					</div>
 				</div>
@@ -92,8 +92,8 @@ function Home() {
 
 					{isLoading ? null : (
 						<TaskList
-							tasks={tasks}
-							onToggleCompletion={toggleTaskCompletion}
+							tasks={activeTasks}
+							onComplete={markTaskAsCompleted}
 							onDelete={removeTask}
 							onUpdate={updateTask}
 							isTaskProcessing={isTaskProcessing}

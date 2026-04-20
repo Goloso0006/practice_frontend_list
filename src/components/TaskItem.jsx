@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function TaskItem({ task, onToggleCompletion, onDelete, onUpdate, isProcessing = false }) {
+function TaskItem({ task, onComplete, onDelete, onUpdate, isProcessing = false }) {
 	const [isEditing, setIsEditing] = useState(false)
 	const [title, setTitle] = useState(task.title)
 	const [description, setDescription] = useState(task.description || '')
@@ -106,12 +106,11 @@ function TaskItem({ task, onToggleCompletion, onDelete, onUpdate, isProcessing =
 				<button
 					type="button"
 					className="task-item__toggle"
-					onClick={() => onToggleCompletion(task.id)}
+					onClick={() => onComplete(task.id)}
 					disabled={isProcessing}
-					aria-pressed={task.completed}
-					aria-label={task.completed ? 'Marcar como pendiente' : 'Marcar como completada'}
+					aria-label="Enviar al Cementerio"
 				>
-					{isProcessing ? 'Actualizando...' : task.completed ? 'Completada' : 'Pendiente'}
+					{isProcessing ? 'Moviendo...' : 'Enviar al Cementerio'}
 				</button>
 
 				<div>
