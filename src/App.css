@@ -89,8 +89,14 @@
 
 .workspace-grid {
   display: grid;
-  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .workspace-grid {
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  }
 }
 
 .panel {
