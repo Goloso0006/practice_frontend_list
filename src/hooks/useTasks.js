@@ -118,7 +118,7 @@ export default function useTasks() {
 				taskData: {
 					title: taskData.title,
 					description: taskData.description,
-					completed: taskToUpdate.completed,
+					completed: taskData.completed !== undefined ? taskData.completed : taskToUpdate.completed,
 				},
 			})
 		} catch (updateError) {
