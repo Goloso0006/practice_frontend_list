@@ -5,7 +5,7 @@ const INITIAL_FORM = {
 	description: '',
 }
 
-function TaskForm({ onSubmit, submitLabel = 'Agregar tarea' }) {
+function TaskForm({ onSubmit, submitLabel = 'Agregar tarea', isSubmitting = false }) {
 	const [formValues, setFormValues] = useState(INITIAL_FORM)
 	const [error, setError] = useState('')
 
@@ -22,7 +22,7 @@ function TaskForm({ onSubmit, submitLabel = 'Agregar tarea' }) {
 		}
 	}
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault()
 
 		const title = formValues.title.trim()
@@ -33,12 +33,16 @@ function TaskForm({ onSubmit, submitLabel = 'Agregar tarea' }) {
 			return
 		}
 
-		onSubmit({
-			title,
-			description,
-		})
+		try {
+			await onSubmit({
+				title,
+				description,
+			})
 
-		setFormValues(INITIAL_FORM)
+			setFormValues(INITIAL_FORM)
+		} catch (submitError) {
+			setError(submitError.message || 'No se pudo crear la tarea.')
+		}
 	}
 
 	return (
@@ -55,6 +59,7 @@ function TaskForm({ onSubmit, submitLabel = 'Agregar tarea' }) {
 					name="title"
 					value={formValues.title}
 					onChange={handleChange}
+					disabled={isSubmitting}
 					placeholder="Ej. Conectar el backend"
 				/>
 			</label>
@@ -65,6 +70,7 @@ function TaskForm({ onSubmit, submitLabel = 'Agregar tarea' }) {
 					name="description"
 					value={formValues.description}
 					onChange={handleChange}
+					disabled={isSubmitting}
 					placeholder="Notas opcionales para esta tarea"
 					rows="4"
 				/>
@@ -72,8 +78,8 @@ function TaskForm({ onSubmit, submitLabel = 'Agregar tarea' }) {
 
 			{error ? <p className="field-error">{error}</p> : null}
 
-			<button className="primary-button" type="submit">
-				{submitLabel}
+			<button className="primary-button" type="submit" disabled={isSubmitting}>
+				{isSubmitting ? 'Guardando...' : submitLabel}
 			</button>
 		</form>
 	)

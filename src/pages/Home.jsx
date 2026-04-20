@@ -24,8 +24,12 @@ const MODULE_CARDS = [
 function Home() {
 	const {
 		tasks,
+		isLoading,
+		isSubmitting,
+		error,
 		completedTasks,
 		pendingTasks,
+		isTaskProcessing,
 		addTask,
 		toggleTaskCompletion,
 		removeTask,
@@ -73,20 +77,26 @@ function Home() {
 
 			<section className="workspace-grid">
 				<div className="panel panel--form">
-					<TaskForm onSubmit={addTask} />
+					<TaskForm onSubmit={addTask} isSubmitting={isSubmitting} />
 				</div>
 
 				<div className="panel panel--list">
 					<div className="panel__header">
 						<p className="section-label">Tareas</p>
-						<h2>Estado local preparado para pasar a API</h2>
+						<h2>Lógica conectada al backend</h2>
 					</div>
 
-					<TaskList
-						tasks={tasks}
-						onToggleCompletion={toggleTaskCompletion}
-						onDelete={removeTask}
-					/>
+					{error ? <p className="field-error">{error}</p> : null}
+					{isLoading ? <p>Cargando tareas...</p> : null}
+
+					{isLoading ? null : (
+						<TaskList
+							tasks={tasks}
+							onToggleCompletion={toggleTaskCompletion}
+							onDelete={removeTask}
+							isTaskProcessing={isTaskProcessing}
+						/>
+					)}
 				</div>
 			</section>
 		</main>

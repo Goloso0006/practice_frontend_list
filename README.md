@@ -7,3 +7,4 @@ pero antes de comenzar dividiremos el trabajo en 5 partes.
 
 comencemos con este primer paso solo con esto por ahora y cuando termines me das un resumen corto de lo implementado 
 
+2- ahora vamos con la 2 parrte implementemos la logica para cada estructura por ahora el diseño no es relevante la idea es tener como el esquema y la logica completada por ahora raliza esto. y al final me das un resumen de lo que implementastes

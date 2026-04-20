@@ -1,4 +1,4 @@
-function TaskItem({ task, onToggleCompletion, onDelete }) {
+function TaskItem({ task, onToggleCompletion, onDelete, isProcessing = false }) {
 	return (
 		<article className={`task-item${task.completed ? ' task-item--completed' : ''}`}>
 			<div className="task-item__content">
@@ -6,10 +6,11 @@ function TaskItem({ task, onToggleCompletion, onDelete }) {
 					type="button"
 					className="task-item__toggle"
 					onClick={() => onToggleCompletion(task.id)}
+					disabled={isProcessing}
 					aria-pressed={task.completed}
 					aria-label={task.completed ? 'Marcar como pendiente' : 'Marcar como completada'}
 				>
-					{task.completed ? 'Completada' : 'Pendiente'}
+					{isProcessing ? 'Actualizando...' : task.completed ? 'Completada' : 'Pendiente'}
 				</button>
 
 				<div>
@@ -22,6 +23,7 @@ function TaskItem({ task, onToggleCompletion, onDelete }) {
 				type="button"
 				className="task-item__delete"
 				onClick={() => onDelete(task.id)}
+				disabled={isProcessing}
 			>
 				Eliminar
 			</button>
